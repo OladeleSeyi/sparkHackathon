@@ -4,7 +4,11 @@ import useFormFields from "../../lib/useFormFields";
 import Cta from "./components/Cta";
 import Form from "./components/Form";
 import Instructions from "./components/Instructions";
+import LinkDisplay from "./components/LinkDisplay";
 import PriceList from "./components/PriceList";
+
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const PaymentSection = () => {
   const initialFields = {
@@ -62,21 +66,46 @@ const PaymentSection = () => {
       };
       const request = await sendFunds(requestVariables);
       setLink(request.data.paymentLink);
+      toast.success("Click on the link below !!!", {
+        position: "top-right",
+        autoClose: 3000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     } catch (e) {
       setError(e);
+      toast.error(error, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   }
 
   React.useEffect(() => {
     try {
-      getCurrentPrice().then((res) => {
-        const { buyPricePerCoin, id } = res.data;
-        console.log("background update", buyPricePerCoin);
-        setCurrentPrice(buyPricePerCoin);
-        setOrderId(id);
-      });
+      const start = getCurrentPrice();
+      const { buyPricePerCoin, id } = start.data;
+      console.log("background update", buyPricePerCoin);
+      setCurrentPrice(buyPricePerCoin);
+      setOrderId(id);
     } catch (e) {
-      setError("An error occured Error");
+      toast.error("Poor Network Connection! Please refresh the page ", {
+        position: "top-right",
+        autoClose: false,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+      });
     }
   }, []);
 
@@ -96,17 +125,20 @@ const PaymentSection = () => {
             </div>
 
             <div className="group relative">
-              <div className="relative w-full h-80 bg-indigo-100 p-2 rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1">
+              <div className="relative w-full h-80 bg-indigo-100 p-2 rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1 flex flex-col space-y-4">
                 <Form
                   fields={fields}
                   handleFieldChange={handleFieldChange}
                   handleSend={handleSend}
                 />
+                {link && <LinkDisplay link={link} />}
               </div>
             </div>
           </div>
         </div>
       </div>
+
+      <ToastContainer />
     </div>
   );
 };
