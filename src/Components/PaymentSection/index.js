@@ -39,7 +39,7 @@ const PaymentSection = () => {
 
   async function handleSend(e) {
     e.preventDefault();
-
+    const currentPrice = await getCurrentPrice();
     const btcAmount = getBtcAmount(currentPrice, amount);
 
     try {
@@ -85,12 +85,14 @@ const PaymentSection = () => {
       const start = getCurrentPrice();
       const { buyPricePerCoin, id } = start.data;
       console.log("background update", buyPricePerCoin);
+      console.log("buyP", buyPricePerCoin);
       setCurrentPrice(buyPricePerCoin);
       setOrderId(id);
     } catch (e) {
-      toast.error("Poor Network Connection! Please refresh the page ", {
+      console.log("error", e);
+      toast.error("Loading Exchange Price. Poor Network Connection!", {
         position: "top-right",
-        autoClose: false,
+        autoClose: 3000,
         hideProgressBar: false,
         closeOnClick: true,
         pauseOnHover: true,
