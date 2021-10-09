@@ -48,9 +48,9 @@ const PaymentSection = () => {
       const safetyAmount = getSafetyAmount(currentPrice, totalBtcAmount);
       const requestVariables = {
         ...fields,
-        btcAmount,
+        btcAmount: btcAmount / 100,
         networkFee,
-        totalBtcAmount,
+        totalBtcAmount: totalBtcAmount / 100,
         amount,
         safetyAmount,
         orderId,
