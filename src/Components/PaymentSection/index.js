@@ -3,6 +3,7 @@ import { getCurrentPrice, getTxnFee, sendFunds } from "../../api/requests";
 import useFormFields from "../../lib/useFormFields";
 import Cta from "./components/Cta";
 import Form from "./components/Form";
+import Instructions from "./components/Instructions";
 import PriceList from "./components/PriceList";
 
 const PaymentSection = () => {
@@ -90,6 +91,7 @@ const PaymentSection = () => {
               <div className="relative w-full h-80 bg-green-100 p-2 rounded-lg overflow-hidden group-hover:opacity-75 sm:aspect-w-2 sm:aspect-h-1 sm:h-64 lg:aspect-w-1 lg:aspect-h-1 flex flex-col space-y-4">
                 <Cta />
                 <PriceList handleSelectAmount={handleSelectAmount} />
+                <Instructions />
               </div>
             </div>
 
