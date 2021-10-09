@@ -84,9 +84,7 @@ const PaymentSection = () => {
     try {
       getCurrentPrice().then((res) => {
         const { buyPricePerCoin, id } = res.data;
-
         console.log("background update", buyPricePerCoin);
-
         setCurrentPrice(buyPricePerCoin);
         setOrderId(id);
       });
