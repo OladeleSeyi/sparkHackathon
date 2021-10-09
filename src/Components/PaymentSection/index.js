@@ -82,12 +82,14 @@ const PaymentSection = () => {
 
   React.useEffect(() => {
     try {
-      const start = getCurrentPrice();
-      const { buyPricePerCoin, id } = start.data;
-      console.log("background update", buyPricePerCoin);
-      console.log("buyP", buyPricePerCoin);
-      setCurrentPrice(buyPricePerCoin);
-      setOrderId(id);
+        getCurrentPrice().then((res) => {
+        const { buyPricePerCoin, id } = res.data;
+
+        console.log("background update", buyPricePerCoin);
+
+        setCurrentPrice(buyPricePerCoin);
+        setOrderId(id);
+      });
     } catch (e) {
       console.log("error", e);
       toast.error("Loading Exchange Price. Poor Network Connection!", {
