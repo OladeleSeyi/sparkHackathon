@@ -82,11 +82,12 @@ const PaymentSection = () => {
 
   React.useEffect(() => {
     try {
-      const start = getCurrentPrice();
-      const { buyPricePerCoin, id } = start.data;
-      console.log("background update", buyPricePerCoin);
-      setCurrentPrice(buyPricePerCoin);
-      setOrderId(id);
+      getCurrentPrice().then((res) => {
+        const { buyPricePerCoin, id } = res.data;
+        console.log("background update", buyPricePerCoin);
+        setCurrentPrice(buyPricePerCoin);
+        setOrderId(id);
+      });
     } catch (e) {
       toast.error("Poor Network Connection! Please refresh the page ", {
         position: "top-right",
