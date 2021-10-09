@@ -39,7 +39,6 @@ const PaymentSection = () => {
 
   async function handleSend(e) {
     e.preventDefault();
-    const currentPrice = await getCurrentPrice();
     const btcAmount = getBtcAmount(currentPrice, amount);
 
     try {
