@@ -1,14 +1,28 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import { Amplify } from "aws-amplify";
+import config from "./api/config";
+import "./index.css";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+
+Amplify.configure({
+  API: {
+    endpoints: [
+      {
+        name: "buycoins",
+        endpoint: config.apiGateway.URL,
+        region: config.apiGateway.REGION,
+      },
+    ],
+  },
+});
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function

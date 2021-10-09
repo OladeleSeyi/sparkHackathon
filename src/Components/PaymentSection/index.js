@@ -1,4 +1,5 @@
 import React from "react";
+import { getCurrentPrice, getTxnFee, sendFunds } from "../../api/requests";
 import useFormFields from "../../lib/useFormFields";
 import Cta from "./components/Cta";
 import Form from "./components/Form";
@@ -11,21 +12,72 @@ const PaymentSection = () => {
   };
   const [fields, handleFieldChange] = useFormFields(initialFields);
   const [amount, setAmount] = React.useState(0);
+  const [currentPrice, setCurrentPrice] = React.useState(0);
+  const [orderId, setOrderId] = React.useState("");
+  const [count, setCount] = React.useState(0);
+  const [link, setLink] = React.useState(null);
+  const [error, setError] = React.useState(null);
 
   // Functions
 
   function handleSelectAmount(num) {
     return setAmount(num);
   }
-  function handleSend(e) {
+
+  function updatePrice() {
+    console.log("count", count);
+    setInterval(() => {
+      return setCount(count + 1);
+    }, 30000);
+  }
+
+  function getBtcAmount(price, amount) {
+    return amount / price;
+  }
+
+  function getSafetyAmount(price, totalBtcAmount) {
+    return totalBtcAmount * price;
+  }
+
+  // updatePrice();
+
+  async function handleSend(e) {
     e.preventDefault();
 
-    const requestVariables = {
-      ...fields,
-      amount,
-    };
-    console.log("vars", requestVariables);
+    const btcAmount = getBtcAmount(currentPrice, amount);
+
+    try {
+      const { estimatedFee: networkFee, total: totalBtcAmount } =
+        await getTxnFee(btcAmount);
+      const safetyAmount = getSafetyAmount(currentPrice, totalBtcAmount);
+      const requestVariables = {
+        ...fields,
+        btcAmount,
+        networkFee,
+        totalBtcAmount,
+        amount,
+        safetyAmount,
+        orderId,
+      };
+      const request = await sendFunds(requestVariables);
+      setLink(request.data.paymentLink);
+    } catch (e) {
+      setError(e);
+    }
   }
+
+  React.useEffect(() => {
+    try {
+      getCurrentPrice().then((res) => {
+        const { buyPricePerCoin, id } = res.data;
+        console.log("background update", buyPricePerCoin);
+        setCurrentPrice(buyPricePerCoin);
+        setOrderId(id);
+      });
+    } catch (e) {
+      setError("An error occured Error");
+    }
+  }, []);
 
   return (
     <div className="relative bg-white overflow-hidden">
