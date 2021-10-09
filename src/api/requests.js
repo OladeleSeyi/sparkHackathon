@@ -1,9 +1,12 @@
 import { API } from "aws-amplify";
 
 export const getCurrentPrice = async () => {
-  const price = await API.get("buycoins", "/hello");
-
-  return price;
+  try {
+    const price = await API.get("buycoins", "/hello");
+    return price;
+  } catch (e) {
+    throw e;
+  }
 };
 
 export const getTxnFee = async (data) => {
@@ -13,9 +16,7 @@ export const getTxnFee = async (data) => {
     });
 
     return txnFee.data.getEstimatedNetworkFee;
-  } catch (e) {
-    throw e;
-  }
+  } catch (e) {}
 };
 
 export const sendFunds = async (data) => {
