@@ -19,21 +19,14 @@ const PaymentSection = () => {
   const [amount, setAmount] = React.useState(0);
   const [currentPrice, setCurrentPrice] = React.useState(0);
   const [orderId, setOrderId] = React.useState("");
-  const [count, setCount] = React.useState(0);
   const [link, setLink] = React.useState(null);
+
   const [error, setError] = React.useState(null);
 
   // Functions
 
   function handleSelectAmount(num) {
     return setAmount(num);
-  }
-
-  function updatePrice() {
-    console.log("count", count);
-    setInterval(() => {
-      return setCount(count + 1);
-    }, 30000);
   }
 
   function getBtcAmount(price, amount) {
@@ -43,8 +36,6 @@ const PaymentSection = () => {
   function getSafetyAmount(price, totalBtcAmount) {
     return totalBtcAmount * price;
   }
-
-  // updatePrice();
 
   async function handleSend(e) {
     e.preventDefault();
