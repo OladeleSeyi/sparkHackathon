@@ -6,6 +6,12 @@ const PriceList = ({ handleSelectAmount }) => {
       <div className="flex flex-row space-x-4">
         <button
           className="w-auto p-2 h-16 rounded-md bg-yellow-400 text-white flex items-center justify-center text-2xl font-extrabold"
+          onClick={() => handleSelectAmount(3200)}
+        >
+          ₦3200
+        </button>
+        <button
+          className="w-auto p-2 h-16 rounded-md bg-yellow-400 text-white flex items-center justify-center text-2xl font-extrabold"
           onClick={() => handleSelectAmount(5000)}
         >
           ₦5000
