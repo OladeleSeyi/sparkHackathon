@@ -28,6 +28,12 @@ const PriceList = ({ handleSelectAmount }) => {
         >
           ₦10000
         </button>
+        <button
+          className="w-auto p-2 h-16 rounded-md bg-yellow-400 text-white flex items-center justify-center text-2xl font-extrabold"
+          onClick={() => handleSelectAmount(15000)}
+        >
+          ₦15000
+        </button>
       </div>
     </div>
   );
